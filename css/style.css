@@ -22,3 +22,13 @@ background-color: var(--primary);
 color: var(--textc);
 font-size: 1em;
 }
+.answers{
+  
+  list-style: none;
+  justify-content: left;
+  color: var(--textc);
+  margin-left: auto;
+  margin-right: auto;
+  width: 10em;
+
+}
