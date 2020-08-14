@@ -37,7 +37,6 @@ var qlist = [];
 
 // reset page content
 var rem = document.getElementById("startertext");
-console.log(rem);
 if (rem!=null) {rem.remove();};
 if (buttonendid!=null) {buttonendid.remove();};
 
@@ -48,14 +47,17 @@ questionsid.innerHTML = qanda[page].q;
 
 for (i=0;i<qanda[page].s.length; i++){
 qlist[i] = document.createElement("li");
+qlist[i].id= "listn";
 qlist[i].textContent = i+1 + ". "+ qanda[page].s[i];
 qlist[i].style.marginTop= "3%";
 qlist[i].style.marginLeft= "0%";
-qlist[i].style.paddingTop="1%";
-qlist[i].style.paddingBottom="1%";
-qlist[i].style.backgroundColor="purple";
+qlist[i].style.paddingTop="4%";
+qlist[i].style.paddingBottom="4%";
+qlist[i].style.paddingLeft="7%";
+qlist[i].style.backgroundColor="darkblue";
 qlist[i].style.textAlign="left";
-qlist[i].style.fontSize="1.5em";
+qlist[i].style.fontSize="1.3em";
+qlist[i].style.borderRadius="7px"; 
 answersid.appendChild(qlist[i]);
 }
 
@@ -67,6 +69,24 @@ startertext.innerHTML = "";
 qandawrapperid.appendChild(startertext);
 }
 
+var hoverin = function(event) {
+  // turn background purple when mouse hovers over
+  var selection = event.target;
+  if (selection.id == "listn"){
+  selection.style.backgroundColor="purple"; 
+  };
+};
+
+var hoverout = function(event) {
+  // turn background back to blue when mouse leaves
+  var selection = event.target;
+  if (selection.id == "listn"){
+  selection.style.backgroundColor="darkblue"; 
+  };
+  };
+
 
 startingpage();
 buttonendid.addEventListener("click", quizpage);
+answersid.addEventListener("mouseover", hoverin);
+answersid.addEventListener("mouseout", hoverout);
