@@ -6,9 +6,11 @@ var qandawrapperid = document.querySelector("#qandawrapper");
 var questionsid = document.querySelector("#questions");
 var answersid = document.querySelector("#answers");
 
+var timeleft = 50;
 var pagenumber = 0;
 var highscore = 0;
 var endquiz = 0;
+var headerhis = 0; // Checks if we are in the highscore section and adjust header accordingly
 var initialshi = [];
 var highscorehi = [];
 var qanda = [
@@ -21,9 +23,13 @@ var qanda = [
 
 var startingpage = function () {
 
+  console.log ("I am in starting page");
+
   //reset page
   resetpage();
   endquizb = -1;
+  pagenumber = 0;
+  headerhis = 0;
 
   // Add text for the starting page
   questionsid.innerHTML = "Code Quizing Challenge";
@@ -51,11 +57,15 @@ var startingpage = function () {
 }
 
 
+
+
+
+
 var displayheader = function () {
 
   highscoreid.textContent = "View High Score";
   highscoreid.style.color = "darkblue"
-  timerid.textContent = "View Timer"
+  
 
 
 
@@ -68,17 +78,22 @@ timerid.textContent="";
 
 var quizpage = function () {
 
+  console.log ("I am in quiz page");
   pagenumber = 0;
   highscore = 0;
   endquizb = 0;
+  headerhis = 0;
 
   loadquiz(pagenumber);
+  timer();
 
 
 }
 
 var loadquiz = function (page) {
 
+  headerhis = 0;
+  console.log ("I am in loadquiz page");
   displayheader();
 
   var qlist = [];
@@ -181,7 +196,8 @@ var resetpage = function () {
 
 var endquiz = function () {
 
-  console.log("I am in endquiz");
+  console.log ("I am in end quiz page");
+
   resetpage();
   
   displayheader();
@@ -190,7 +206,7 @@ var endquiz = function () {
   var rems = document.getElementById("endtext");
   var newrems = rems;
   if (rems != null) { rems.remove(); };
-  console.log(newrems);
+
 
 
 
@@ -222,7 +238,7 @@ var endquiz = function () {
   formtext.appendChild(submit);
   qandawrapperid.appendChild(startertext);
   qandawrapperid.appendChild(formtext);
-  qandawrapperid.appendChild(newrems);
+  if (newrems){qandawrapperid.appendChild(newrems);};
 
   // reset the text at the end showing right or wrong
   var inp = document.getElementById("initials");
@@ -264,6 +280,9 @@ var selected = function (event) {
   }
   else {
     endtext.innerHTML = "Wrong !"
+
+    // Time penalty for incorrect response
+    timeleft = timeleft - 20  ;
   }
 
   // update the page number and load next question or end quiz
@@ -278,8 +297,10 @@ var selected = function (event) {
 
 };
 
+
+
 var clearhighscores = function () {
-  console.log("I am in clearhighscore");
+ 
   // get initials in local storage
   window.localStorage.removeItem("initls");
   // get highscore in local storage
@@ -292,10 +313,14 @@ var clearhighscores = function () {
 
 var highscorescreen = function (init) {
 
+  console.log ("I am in highscorescreen");
   // reset screen
 
   resetpage();  
- clearheader();
+  clearheader();
+
+   headerhis = 1;   // Make sure not to count time while viewing the high score 
+   
   // Add text for the starting page
   questionsid.innerHTML = "High Scores";
 
@@ -311,7 +336,6 @@ var highscorescreen = function (init) {
     // store highscore in local storage
     highscorehi.push(highscore);
     localStorage.setItem("highscores", JSON.stringify(highscorehi));
-``
    };
   }
   else {
@@ -383,32 +407,80 @@ var highscorescreen = function (init) {
   console.log ("page" + pagenumber + "    endquizb  " + endquizb);
   
     newbutton1.addEventListener("click", function() {
-      if (pagenumber == (qanda.length) && (endquizb == 1)) {
+
+      // end of quiz and gone through all questions or time ran out
+      if (pagenumber <= (qanda.length) && (endquizb == 1)) {
        
         startingpage();
+        return;
     };  
+
+    // not end of quiz, went to high score from question
     
     if (pagenumber < (qanda.length) && (endquizb == 0)) {
     
        loadquiz(pagenumber);
+       return;
   };  
+
+  // not end of quiz, went to high score from starting page
+
   if (pagenumber < (qanda.length) && (endquizb == -1)) {
     
     startingpage();
+    return; 
 };
+
+// not end of quiz but went to high scores from submit page
+
   if (pagenumber == (qanda.length) && (endquizb == 2)) {
     
     endquiz();
+    return;
   
 }; 
+
+
 });
 
   newbutton2.addEventListener("click", clearhighscores);
 
 }
 
+var timer = function () {
+  var timeInterval = setInterval(function(){
+    console.log (timeleft);
+    if (timeleft >0 && pagenumber<qanda.length && headerhis == 0) {
+    timeleft--;
+    timerid.textContent = "Time: " + timeleft;
+    }
+
+    else if (timeleft >0 && pagenumber==qanda.length){
+      clearInterval(timeInterval);
+      timerid.textContent = "";
+      timeleft = 50;
+      endquiz ();
+    }
+
+    else if (headerhis!=1) {
+      // Display no more time if we have run out of time
+        clearInterval(timeInterval);
+        timerid.textContent = "No more time";
+        timeleft = 50;
+        endquiz ();
+      };
+      
+    }
+
+    ,1000);
+}
+
+
 
 startingpage();
+
+
+
 
 answersid.addEventListener("mouseover", hoverin);
 answersid.addEventListener("mouseout", hoverout);
@@ -417,6 +489,6 @@ answersid.addEventListener("click", selected);
 highscoreid.addEventListener("mouseover", hoverin);
 highscoreid.addEventListener("mouseout", hoverout);
 highscoreid.addEventListener("click", function() {
-  console.log ("cliecked");
+  console.log ("clicktyclick");
   highscorescreen("");
 });
