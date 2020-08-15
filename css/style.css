@@ -6,7 +6,6 @@
 body {
  height: fit-content;
  text-align: center;
- padding-top: 5rem;
  font-size: 1.2em;
 }
 h2 {
@@ -14,14 +13,10 @@ h2 {
 }
 header {
   height: fit-content;
+  
+  width: 100%;
 }
-.buttonend {
-margin-top: 2em;
-padding: 0.75em;
-background-color: var(--primary);
-color: var(--textc);
-font-size: 1em;
-}
+
 .answers{
   
   list-style: none;
@@ -30,5 +25,30 @@ font-size: 1em;
   margin-left: auto;
   margin-right: auto;
   width: 10em;
+
+}
+
+.headerwrapper {
+  display: inline-flex;
+  width: 100%;
+  margin-top: 0px;
+  margin-left: 0px;
+  padding-left: 0px;
+  gap: 77%; 
+
+}
+.highscore {
+
+  display: flex;
+  align-items: flex-start;
+  
+  
+
+}
+.timer {
+  
+  display: flex;
+  align-items: flex-end;
+  
 
 }
