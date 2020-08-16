@@ -356,18 +356,30 @@ var highscorescreen = function (init) {
   questionsid.innerHTML = "High Scores";
 
 
+  console.log (init);
+  console.log (initialshi);
+
   if (init!="") { // if init has no value it must be coming from some place apart from the initials form
    
     endquizb = 1;
     
     // store initials in local storage
-   if (initialshi){
+   if (initialshi) {
     initialshi.push(init.value);
     localStorage.setItem("initls", JSON.stringify(initialshi));
     // store highscore in local storage
     highscorehi.push(highscore);
     localStorage.setItem("highscores", JSON.stringify(highscorehi));
-   };
+   }
+   else if (!initialshi){
+     initialshi = [];
+     highscorehi = [];
+    initialshi[0] = init.value;
+    highscorehi[0] = highscore;
+    localStorage.setItem("initls", JSON.stringify(initialshi));
+    localStorage.setItem("highscores", JSON.stringify(highscorehi));
+   }
+   
   }
   else {
     // load initals from local storage
