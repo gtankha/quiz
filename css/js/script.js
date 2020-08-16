@@ -6,24 +6,29 @@ var qandawrapperid = document.querySelector("#qandawrapper");
 var questionsid = document.querySelector("#questions");
 var answersid = document.querySelector("#answers");
 
-var timeleft = 50;
-var pagenumber = 0;
-var highscore = 0;
-var endquiz = 0;
+var timeleft = 50; // initializing time remaining for the counter
+var pagenumber = 0; //  initializing page number reference .. keeps track of which questions and content to load
+var highscore = 0; // global variable for high score
+var endquiz = 0; // global variable to see if quiz ended or in the middle
 var headerhis = 0; // Checks if we are in the highscore section and adjust header accordingly
-var initialshi = [];
-var highscorehi = [];
+var initialshi = []; // initializes the initials variable for high score
+var highscorehi = []; // initializes the highscore 
+
+// list of questions and answers 
+
 var qanda = [
-  { q: "What is xyz", s: ["asas", "qewqwqw", "1212", "3asdasd"], a: 2 },
-  { q: "What is vbvbvbv", s: ["1323123", "asdasds", "Asdasd", "cascas"], a: 0 },
-  { q: "What is the world", s: ["asdasd", "qwqweqe", "zxczxc", "32red"], a: 1 }
+  { q: "What is Java", s: ["Starwars Character", "Ice Cream", "Programming Language", "Super Hero"], a: 2 },
+  { q: "What is an Array", s: ["Data Structure", "Weapon", "Language", "Cartoon"], a: 0 },
+  { q: "What is the MacOS", s: ["Choclate", "Operating System", "Company", "Book"], a: 1 }
 ];
 
 
 
+
+// Starting page  
 var startingpage = function () {
 
-  console.log ("I am in starting page");
+
 
   //reset page
   resetpage();
@@ -60,41 +65,40 @@ var startingpage = function () {
 
 
 
+// This displays the header
 
 var displayheader = function () {
 
   highscoreid.textContent = "View High Score";
   highscoreid.style.color = "darkblue"
-  
-
-
 
 }
 
+// This removes display of the header
 var clearheader = function () {
 highscoreid.textContent="";
 timerid.textContent="";
 }
 
+// Loads the quiz page
 var quizpage = function () {
 
-  console.log ("I am in quiz page");
   pagenumber = 0;
   highscore = 0;
   endquizb = 0;
   headerhis = 0;
-
   loadquiz(pagenumber);
-  timer();
-
+  timer(); //  Starts the timer
 
 }
 
+// Loads the page with the right questions and responses 
+
 var loadquiz = function (page) {
 
-  headerhis = 0;
-  console.log ("I am in loadquiz page");
-  displayheader();
+  headerhis = 0; // not the header
+
+  displayheader(); // displays the header
 
   var qlist = [];
 
@@ -194,14 +198,16 @@ var resetpage = function () {
 
 
 
+// Once the quiz ends and all questions are answered
 var endquiz = function () {
 
-  console.log ("I am in end quiz page");
-
-  resetpage();
   
-  displayheader();
-   
+
+  resetpage(); // reset formatting
+  
+  displayheader(); // display header
+  
+  // Removes the text from previous screen missed by reset function
 
   var rems = document.getElementById("endtext");
   var newrems = rems;
@@ -209,16 +215,21 @@ var endquiz = function () {
 
 
 
-
+// Page content 
   questionsid.innerHTML = "All Done !";
   var startertext = document.createElement("div");
   startertext.className = "startertext";
   startertext.id = "startertext";
   startertext.innerHTML = "Your score is " + highscore + ".";
+  startertext.style.fontSize = "1.5em"; 
 
+  // Creating form for submission
   var formtext = document.createElement("form");
   formtext.setAttribute("id", "formid");
+  // Submits form and calls out the high score function
   formtext.setAttribute("action", "Javascript: highscorescreen(initials)");
+
+  // Creating the form and formatting all of it
   var label = document.createElement("label");
   label.setAttribute("for", "initform");
   var initials = document.createElement("input");
@@ -230,8 +241,21 @@ var endquiz = function () {
   var submit = document.createElement("input");
   submit.setAttribute("type", "submit");
   submit.setAttribute("value", "Submit");
+  // Format submit button
+
+submit.style.marginTop = "1em";
+  submit.style.marginRight = "1em";
+submit.style.padding = "0.75em";
+  submit.style.color = "white";
+  submit.style.fontSize = "1.5em";
+  submit.style.background = "darkblue";
+  submit.style.paddingTop = "0.1em";
+  submit.style.paddingBottom = "0.1em";
 
 
+initials.style.fontSize = "1.5em";
+initials.style.verticalAlign = "middle";
+initials.style.marginRight = "2em";
 
   formtext.appendChild(label);
   formtext.appendChild(initials);
@@ -248,6 +272,8 @@ var endquiz = function () {
   });
 
 }
+
+// Based on response adds to high score and shows the response (right or wrong)
 
 var selected = function (event) {
   // move on to next question upon mouse click
@@ -274,6 +300,8 @@ var selected = function (event) {
   endtext.innerHTML = "";
   qandawrapperid.appendChild(endtext);
 
+  // adjusts high score based on response 
+
   if (iscorrect) {
     highscore = highscore + 1;
     endtext.innerHTML = "Correct !"
@@ -298,6 +326,7 @@ var selected = function (event) {
 };
 
 
+// clear high scores
 
 var clearhighscores = function () {
  
@@ -311,9 +340,11 @@ var clearhighscores = function () {
 
 }
 
+// displays the high score 
+
 var highscorescreen = function (init) {
 
-  console.log ("I am in highscorescreen");
+  
   // reset screen
 
   resetpage();  
@@ -325,7 +356,7 @@ var highscorescreen = function (init) {
   questionsid.innerHTML = "High Scores";
 
 
-  if (init!="") {
+  if (init!="") { // if init has no value it must be coming from some place apart from the initials form
    
     endquizb = 1;
     
@@ -361,7 +392,7 @@ var highscorescreen = function (init) {
   for (i = 0; i < len; i++) {
     hlist[i] = document.createElement("li");
     hlist[i].id = "listhi";
-    hlist[i].textContent = "1. " + initialshi[i] + ":  " + highscorehi[i];
+    hlist[i].textContent = "#"+(i+1) +":   " + initialshi[i] + "'s score is " + highscorehi[i];
     hlist[i].style.color = "black";
     hlist[i].style.backgroundColor = "rgb(240,219,255";
     hlist[i].style.textAlign = "left";
@@ -371,7 +402,7 @@ var highscorescreen = function (init) {
     answersid.appendChild(hlist[i]);
   }
 
-  // Create the Gobak and Clear Hi Score Buttons
+  // Create the Goback and Clear Hi Score Buttons
 
 
 
@@ -404,7 +435,7 @@ var highscorescreen = function (init) {
   newbutton2.addEventListener("mouseover", hoverin);
   newbutton2.addEventListener("mouseout", hoverout);
 
-  console.log ("page" + pagenumber + "    endquizb  " + endquizb);
+
   
     newbutton1.addEventListener("click", function() {
 
@@ -447,9 +478,12 @@ var highscorescreen = function (init) {
 
 }
 
+
+// Timer function that will stop if viewing the high score 
+
 var timer = function () {
   var timeInterval = setInterval(function(){
-    console.log (timeleft);
+   
     if (timeleft >0 && pagenumber<qanda.length && headerhis == 0) {
     timeleft--;
     timerid.textContent = "Time: " + timeleft;
@@ -471,7 +505,6 @@ var timer = function () {
       };
       
     }
-
     ,1000);
 }
 
@@ -480,15 +513,16 @@ var timer = function () {
 startingpage();
 
 
-
+// event listeners for responses
 
 answersid.addEventListener("mouseover", hoverin);
 answersid.addEventListener("mouseout", hoverout);
 answersid.addEventListener("click", selected);
 
+// event listerens for header to view high score
+
 highscoreid.addEventListener("mouseover", hoverin);
 highscoreid.addEventListener("mouseout", hoverout);
 highscoreid.addEventListener("click", function() {
-  console.log ("clicktyclick");
   highscorescreen("");
 });
