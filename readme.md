@@ -15,5 +15,5 @@
 # Local storage for both the initials and highscore
 # clearhighscores functions clears the highscore
 
-# URL:
-# Screenshot: 
+# URL: https://gtankha.github.io/quiz/
+# Screenshot: https://user-images.githubusercontent.com/46304828/90324628-f70f9900-df25-11ea-959b-e5d674d8291f.png
